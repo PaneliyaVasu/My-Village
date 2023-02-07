@@ -40,10 +40,12 @@ class _MyHeaderDrawerState extends State<MyHeaderDrawer> {
                               accountName: Text(data['name']),
                               accountEmail: Text(data['email']),
                               currentAccountPicture: CircleAvatar(
+                                backgroundColor: Colors.white,
                                 child: ClipOval(
                                   child: Image.asset(
                                     'assest/user.png',
                                     fit: BoxFit.cover,
+
                                     width: 90,
                                     height: 90,
                                   ),

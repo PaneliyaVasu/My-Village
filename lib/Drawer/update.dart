@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,25 +9,29 @@ import 'package:practice/login.dart';
 bool showPassword = false;
 
 class UpdatePage extends StatefulWidget {
-   const UpdatePage({Key? key, required this.title}) : super(key: key);
-   final String title;
-   @override
+  const UpdatePage({Key? key, required this.title}) : super(key: key);
+  final String title;
+  @override
   State<UpdatePage> createState() => _UpdatePageState();
 }
 
 class _UpdatePageState extends State<UpdatePage> {
-  bool obsure=true;
-  late String email=widget.title;
+  bool obsure = true;
+  late String email = widget.title;
   late String name;
   late String add;
   late String member;
   late String phone;
+  final _formkey = GlobalKey<FormState>();
+  var user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Container(
+        child: Scaffold(
+      body: Form(
+        key: _formkey,
+        child: Padding(
           padding: EdgeInsets.only(left: 16, top: 25, right: 16),
           child: GestureDetector(
             onTap: () {
@@ -34,17 +40,27 @@ class _UpdatePageState extends State<UpdatePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                Text( '${widget.title}',
-                  style: TextStyle(fontSize: 54),
-                ),
-                  Text(
-                    "Edit Details",
-                    style: GoogleFonts.anton(fontSize: 25, fontWeight: FontWeight.w500)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 30,
+                          color: Colors.black,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
+                  Text("Edit Details",
+                      style: GoogleFonts.anton(
+                          fontSize: 25, fontWeight: FontWeight.w500)),
                   SizedBox(
                     height: 15,
                   ),
-
                   Center(
                     child: Stack(
                       children: [
@@ -54,8 +70,7 @@ class _UpdatePageState extends State<UpdatePage> {
                           decoration: BoxDecoration(
                               border: Border.all(
                                   width: 4,
-                                  color: Theme
-                                      .of(context)
+                                  color: Theme.of(context)
                                       .scaffoldBackgroundColor),
                               boxShadow: [
                                 BoxShadow(
@@ -72,22 +87,23 @@ class _UpdatePageState extends State<UpdatePage> {
                         Positioned(
                             bottom: 0,
                             right: 0,
-                            child: Container(
-                              height: 40,
-                              width: 40,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(
-                                  width: 4,
-                                  color: Theme
-                                      .of(context)
-                                      .scaffoldBackgroundColor,
+                            child: InkWell(
+                              child: Container(
+                                height: 40,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  border: Border.all(
+                                    width: 4,
+                                    color:
+                                        Theme.of(context).scaffoldBackgroundColor,
+                                  ),
+                                  color: Color(0xff3957ed),
                                 ),
-                                color: Color(0xff3957ed),
-                              ),
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.white,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
                               ),
                             )),
                       ],
@@ -97,10 +113,15 @@ class _UpdatePageState extends State<UpdatePage> {
                     height: 35,
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
-                      onChanged: (v){
-                        name=v;
+                      onChanged: (value) {
+                        name = value;
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '*Required field';
+                        }
                       },
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -108,30 +129,33 @@ class _UpdatePageState extends State<UpdatePage> {
                         fontSize: 22,
                       ),
                       decoration: InputDecoration(
-                          border:OutlineInputBorder(
-                              borderSide: BorderSide(width: 2,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                              borderSide: BorderSide(
+                                  width: 1.5, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           prefixIcon: Icon(Icons.person_outline),
-                          labelText:"Full Name",
+                          labelText: "Full Name",
                           labelStyle: TextStyle(
                             fontSize: 18,
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w800,
-                          )
-                      ),
+                          )),
                     ),
                   ),
-
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
-                      onChanged: (v){
-                        add=v;
+                      onChanged: (value) {
+                        add = value;
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '*Required field ';
+                        }
                       },
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -139,30 +163,33 @@ class _UpdatePageState extends State<UpdatePage> {
                         fontSize: 22,
                       ),
                       decoration: InputDecoration(
-                          border:OutlineInputBorder(
-                              borderSide: BorderSide(width: 2,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
-
+                              borderSide: BorderSide(
+                                  width: 1.5, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           prefixIcon: Icon(Icons.home_work_outlined),
-                          labelText:"Home Location",
+                          labelText: "Home Location",
                           labelStyle: TextStyle(
                             fontSize: 18,
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w800,
-                          )
-                      ),
+                          )),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
-                      onChanged: (v){
-                        member=v;
+                      onChanged: (value) {
+                        member = value;
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '*Required field ';
+                        }
                       },
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -170,31 +197,34 @@ class _UpdatePageState extends State<UpdatePage> {
                         fontSize: 22,
                       ),
                       decoration: InputDecoration(
-                          border:OutlineInputBorder(
-                              borderSide: BorderSide(width: 2,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                              borderSide: BorderSide(
+                                  width: 1.5, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           prefixIcon: Icon(Icons.family_restroom),
-                          labelText:"Family members",
+                          labelText: "Family members",
                           labelStyle: TextStyle(
                             fontSize: 18,
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w800,
-                          )
-                      ),
+                          )),
                       keyboardType: TextInputType.number,
                     ),
                   ),
-
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10,vertical: 5),
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     child: TextFormField(
-                      onChanged: (v){
-                        phone=v;
+                      onChanged: (value) {
+                        phone = value;
+                      },
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return '*Required field ';
+                        }
                       },
                       style: TextStyle(
                         color: Theme.of(context).primaryColor,
@@ -202,22 +232,21 @@ class _UpdatePageState extends State<UpdatePage> {
                         fontSize: 22,
                       ),
                       decoration: InputDecoration(
-                          border:OutlineInputBorder(
-                              borderSide: BorderSide(width: 2,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                          border: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 1.5,color: Colors.blueGrey),
-                              borderRadius: BorderRadius.circular(20.0)
-                          ),
+                              borderSide: BorderSide(
+                                  width: 1.5, color: Colors.blueGrey),
+                              borderRadius: BorderRadius.circular(20.0)),
                           prefixIcon: Icon(Icons.phone),
-                          labelText:"Phone numbers",
+                          labelText: "Phone numbers",
                           labelStyle: TextStyle(
                             fontSize: 18,
                             color: Colors.grey[400],
                             fontWeight: FontWeight.w800,
-                          )
-                      ),
+                          )),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -229,18 +258,32 @@ class _UpdatePageState extends State<UpdatePage> {
                     children: [
                       ElevatedButton(
                         onPressed: () async {
+                          if (!_formkey.currentState!.validate()) {
+                            return;
+                          }
                           DocumentReference documentReference =
-                          await FirebaseFirestore.instance.collection('village').doc(email);
-                          documentReference.update({'name':name,'address':add,'member':member,'phone':phone});
-                          Navigator.pushNamed(context, 'home');},
+                              await FirebaseFirestore.instance
+                                  .collection('village')
+                                  .doc(user!.email);
+                          documentReference.update({
+                            'name': name,
+                            'address': add,
+                            'member': member,
+                            'phone': phone
+                          });
+                          Navigator.pushNamed(context, 'home');
+                        },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateColor.resolveWith((states) => Color(0xff3957ed)),
+                          backgroundColor: MaterialStateColor.resolveWith(
+                              (states) => Color(0xff3957ed)),
                         ),
-
-                       child: Text("Update Details",style: TextStyle(
-                         fontWeight: FontWeight.bold,
-                         fontSize: 16,
-                       ),),
+                        child: Text(
+                          "Update Details",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                     ],
                   )
@@ -250,6 +293,6 @@ class _UpdatePageState extends State<UpdatePage> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
