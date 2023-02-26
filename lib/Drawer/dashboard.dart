@@ -74,9 +74,11 @@ class _DashboardPage extends State<DashboardPage> {
                                   radius: 40,
                                   backgroundColor: Colors.white,
                                   child: ClipOval(
-                                    child: Image.asset(
-                                      "assest/user.png",
+                                    child: Image.network(
+                                     data['userimage'],
                                       fit: BoxFit.cover,
+                                      height: 55,
+                                      width: 55,
                                     ),
                                   ),
                                 ),

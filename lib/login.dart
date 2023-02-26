@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:practice/Drawer/Forget.dart';
 import 'package:practice/home.dart';
 import 'package:practice/loading.dart';
 import 'package:practice/register.dart';
+import 'package:practice/secretory/secretarylogin.dart';
 import 'Drawer/update.dart';
-import 'secretary.dart';
+
 
 class MyLogin extends StatefulWidget {
   @override

@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:practice/home.dart';
-import 'package:practice/loading.dart';
-import 'package:practice/register.dart';
+import 'package:practice/login.dart';
+import 'package:practice/secretory/shome.dart';
 
 class MySecretary extends StatefulWidget {
   @override
@@ -41,7 +37,7 @@ class _MySecretary extends State<MySecretary> {
                         IconButton( icon: Icon(Icons.arrow_back,
                           size:30,
                           color: Theme.of(context).primaryColor,
-                        ), onPressed: (){Navigator.pop(context);},
+                        ), onPressed: (){Navigator.push(context, MaterialPageRoute(builder: (context) => MyLogin(),));},
                         ),
                       ],
                     ),
@@ -172,7 +168,7 @@ class _MySecretary extends State<MySecretary> {
                             .forEach((element) {
                         if (element.data()?['adminEmail'] == aemail &&
                         element.data()?['adminPass'] == apass) {
-                        Navigator.pushNamed(context, 'adminpanel');
+                       Navigator.push(context, MaterialPageRoute(builder: (context) =>SHomePage(),));
                         }else{
                           ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(

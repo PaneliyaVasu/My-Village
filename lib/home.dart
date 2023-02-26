@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:practice/CategoryScreen.dart';
 import 'package:practice/login.dart';
 import 'Drawer/setting.dart';
-import 'Drawer/expense.dart';
+import 'package:practice/ExpenseForm.dart';
 import 'Drawer/contacts.dart';
 import 'Drawer/dashboard.dart';
 import 'Drawer/events.dart';
@@ -12,6 +13,7 @@ import 'Drawer/voting.dart';
 import 'Drawer/complain.dart';
 import 'Drawer/update.dart';
 import 'Drawer/drawer.dart';
+import 'Drawer/Forget.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -36,9 +38,9 @@ class _HomePageState extends State<HomePage> {
     }else if (currentPage == DrawerSections.voting) {
       container = VotingPage();
     }else if (currentPage == DrawerSections.expense) {
-      container = ExpensePage();
+      container = CategoryScreen();
     }else if (currentPage == DrawerSections.complain) {
-      container = ComplainPage();
+      container = Complain();
     }else if (currentPage == DrawerSections.update) {
       container = UpdatePage(title: '',);
     }else if (currentPage == DrawerSections.setting) {
